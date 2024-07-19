@@ -9,7 +9,7 @@ urlpatterns = [
 
     #Update
     path('update-group/<int:pk>/', update_group, name='update_group'),
-    path('update-student/<int:pk>/', update_student, name='update_student'),
+    path('student/update/<int:pk>/<int:group_id>/', update_student, name='update_student'),
 
     # Delete
     path('delete-group/<int:pk>/', delete_group, name='delete_group'),
