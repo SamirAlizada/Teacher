@@ -35,15 +35,16 @@ def group_detail(request, group_id):
     students = Student.objects.filter(group=group)
     return render(request, 'group/group_detail.html', {'group': group, 'students': students})
 
-def update_student(request, pk):
+def update_student(request, pk, group_id):
     student = get_object_or_404(Student, pk=pk)
+    group = get_object_or_404(Group, pk=group_id)
     form = StudentForm(instance=student)
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('group_list')
-    return render(request, 'student/update_student.html', {'form': form})
+            return redirect('group_detail', group_id=group.id)
+    return render(request, 'student/update_student.html', {'form': form, 'group': group})
 
 def update_group(request, pk):
     group = get_object_or_404(Group, pk=pk)
