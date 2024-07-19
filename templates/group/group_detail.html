@@ -85,7 +85,7 @@
 
     .btn-update {
         background-color: #ffc107;
-        color: white;
+        color: black;
     }
 
     .btn-update:hover {
@@ -129,8 +129,8 @@
                     <td class="text-center">{{ student.add_date|date:"d/m/Y" }}</td>
                     <td class="text-center">{{ student.end_date|date:"d/m/Y" }}</td>
                     <td class="text-center">
-                        <a href="{% url 'update_student' student.id %}" class="btn btn-update">Update</a>
-                        <a href="{% url 'delete_student' student.id %}" class="btn btn-delete" onclick="return confirm('Bu tələbəni silmək istədiyinizə əminsiniz?')">Delete</a>
+                        <a href="{% url 'update_student' student.id group.id %}" class="btn btn-update">Düzəliş Et</a>
+                        <a href="{% url 'delete_student' student.id %}" class="btn btn-delete" onclick="return confirm('Bu tələbəni silmək istədiyinizə əminsiniz?')">Sil</a>
                     </td>
                 </tr>
             {% endfor %}

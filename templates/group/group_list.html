@@ -98,8 +98,8 @@
                     <a href="{% url 'group_detail' group.id %}">{{ group.name }}</a>
                 </div>
                 <div class="btn-group">
-                    <a href="{% url 'update_group' group.id %}" class="btn btn-update ml-1" style="background-color: #eeca5d;">Update</a>
-                    <a href="{% url 'delete_group' group.id %}" class="btn btn-delete" style="background-color: #DC3545; color: white;" onclick="return confirm('Bu qrupu silmək istədiyinizə əminsiniz?')">Delete</a>
+                    <a href="{% url 'update_group' group.id %}" class="btn btn-update ml-1" style="background-color: #eeca5d;">Düzəliş Et</a>
+                    <a href="{% url 'delete_group' group.id %}" class="btn btn-delete" style="background-color: #DC3545; color: white;" onclick="return confirm('Bu qrupu silmək istədiyinizə əminsiniz?')">Sil</a>
                 </div>
             </li>
         {% endfor %}
