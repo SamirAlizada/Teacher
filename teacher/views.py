@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Group, Student
 from .forms import GroupForm, StudentForm
 from django.contrib import messages
+from datetime import datetime, date, timedelta
 
 
 def add_group(request):
@@ -21,11 +22,16 @@ def group_list(request):
 
 def add_student(request):
     if request.method == 'POST':
+        print("POST request received")
         form = StudentForm(request.POST)
         if form.is_valid():
+            print("Form düzgündür")
             form.save()
             messages.success(request, 'Tələbə uğurla əlavə edildi.')
             return redirect('add_student') 
+        else:
+            print("Form düzgün deyil")
+            print(form.errors)
     else:
         form = StudentForm()
     return render(request, 'student/add_student.html', {'form': form})
@@ -38,13 +44,24 @@ def group_detail(request, group_id):
 def update_student(request, pk, group_id):
     student = get_object_or_404(Student, pk=pk)
     group = get_object_or_404(Group, pk=group_id)
-    form = StudentForm(instance=student)
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
             return redirect('group_detail', group_id=group.id)
+    else:
+        form = StudentForm(instance=student)
     return render(request, 'student/update_student.html', {'form': form, 'group': group})
+
+def update_student_pay(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    form = StudentForm(instance=student)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('student_panel')
+    return render(request, 'student/update_student_pay.html', {'form': form})
 
 def update_group(request, pk):
     group = get_object_or_404(Group, pk=pk)
@@ -66,6 +83,14 @@ def delete_student(request, pk):
     student = Student.objects.get(pk=pk)
     student.delete()
     return redirect('group_list')
+
+def pay_day(request):
+    now = datetime.now()
+    today = now.date()
+    expired_students = Student.objects.filter(end_date=today)
+    return render(request, 'student/pay_day.html', {'expired_students': expired_students})
+
+
 
 # User
 def user_login(request):
