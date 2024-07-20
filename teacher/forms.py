@@ -16,28 +16,26 @@ class CustomDateInput(forms.DateInput):
                 return value.strftime(self.format)
         return value
 
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        fields = ['name']
-
 class StudentForm(forms.ModelForm):
     add_date = forms.CharField(widget=CustomDateInput(attrs={'class': 'form-control', 'placeholder': 'DD/MM/YYYY'}))
 
     class Meta:
         model = Student
-        fields = ['group', 'full_name', 'price', 'grade','add_date']
+        fields = ['group', 'full_name', 'price', 'grade', 'add_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if not self.instance.pk:  # If create new form
+        if not self.instance.pk:  # If creating a new form
             self.fields['add_date'].initial = date.today().strftime('%d/%m/%Y')
-    
-    def clean_date(self):
+
+    def clean_add_date(self):
         add_date = self.cleaned_data['add_date']
-        if isinstance(date, str):
-            try:
-                return datetime.strptime(add_date, '%d/%m/%Y').date()
-            except ValueError:
-                raise forms.ValidationError("Tarixi DD/MM/YYYY formatında daxil edin.")
-        return date
+        try:
+            return datetime.strptime(add_date, '%d/%m/%Y').date()
+        except ValueError:
+            raise forms.ValidationError("Tarixi DD/MM/YYYY formatında daxil edin.")
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name']
