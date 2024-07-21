@@ -60,7 +60,7 @@ def update_student_pay(request, pk):
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('student_panel')
+            return redirect('pay_day')
     return render(request, 'student/update_student_pay.html', {'form': form})
 
 def update_group(request, pk):
