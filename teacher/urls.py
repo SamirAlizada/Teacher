@@ -16,7 +16,7 @@ urlpatterns = [
     path('delete-group/<int:pk>/', delete_group, name='delete_group'),
     path('delete-student/<int:pk>/', delete_student, name='delete_student'),
 
-    path('pay_day/', pay_day, name='pay_day'),
+    path('pay-day/', pay_day, name='pay_day'),
 
     # Account
     path('login/', user_login, name='login'),
