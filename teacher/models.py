@@ -10,7 +10,7 @@ class Group(models.Model):
         return self.name
 
 class Student(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey('Group', on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200)
     price = models.IntegerField()
     grade = models.IntegerField()
