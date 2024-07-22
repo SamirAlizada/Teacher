@@ -4,7 +4,9 @@ from .models import Group, Student
 from .forms import GroupForm, StudentForm
 from django.contrib import messages
 from datetime import datetime, date, timedelta
-
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+from django.db.models import Q
 
 def add_group(request):
     if request.method == 'POST':
@@ -87,10 +89,21 @@ def delete_student(request, pk):
 def pay_day(request):
     now = datetime.now()
     today = now.date()
-    expired_students = Student.objects.filter(end_date=today)
+    end_date_range = today - timedelta(days=27)
+    
+    expired_students = Student.objects.filter(
+        Q(end_date=today) | Q(end_date__range=(end_date_range, today))
+    )
     return render(request, 'student/pay_day.html', {'expired_students': expired_students})
 
+def renew_student(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
 
+    # Update the student's records
+    student.add_date = student.end_date
+    student.end_date = student.add_date + relativedelta(months=1)
+    student.save()
+    return redirect('pay_day')
 
 # User
 def user_login(request):
